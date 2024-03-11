@@ -81,11 +81,11 @@ app.post('/user/login',async(req,res)=>{
     
   if(user_login){
     {
-      let token= await jsonwebtoken.sign({id:user_login.id,user_name:user_login.user_name,email:user_login.email,labels:user_login.labels},process.env.SECRET)
+      let token= await jsonwebtoken.sign({id:user_login.id,user_name:user_login.user_name,email:user_login.email},process.env.SECRET)
       res.setHeader('token',token)
       res.setHeader('user_name',user_login.user_name)
       res.setHeader('email', user_login.email)
-      res.setHeader('labels',user_login.labels)
+      
       res.status(200).json({message:"success",data:token})
     }
 
@@ -121,7 +121,7 @@ app.post('/user/create',authorization,async(req,res)=>{
 app.post('/user/list',authorization,async(req,res)=>{
   try{
     const title=await user.findOne({
-      _id:req.body._id})
+      _id:req.id})
     res.status(200).json({message:"success",data:title})
   }catch(error){
     res.status(500).json({message:"failed"})
