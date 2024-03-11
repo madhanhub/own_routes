@@ -171,7 +171,6 @@ app.post('/user/labels',authorization,async(req,res)=>{
 })
 
 
-
 app.post('/userfind',async(req,res)=>{
   try{
     const find=await user.findOneAndUpdate({
@@ -192,6 +191,7 @@ app.post('/userfind',async(req,res)=>{
 
 })
 
+//user_change_iscomplete
 app.post('/user/change',authorization,async(req,res)=>{
   try{
       const change=await user.findOneAndUpdate({_id:req.body.id,'labels.title':req.body.title},
@@ -202,6 +202,24 @@ app.post('/user/change',authorization,async(req,res)=>{
     res.status(200).json({message:"failed"})
   }
 })
+
+//user_change_status
+app.post('/user/statu',authorization,async(req,res)=>{
+  try{
+    const statu=await user.findOneAndUpdate(
+      {user_name:req.body.user_name,statu:false},
+      {$set:{statu:true}},
+      {new:true}
+      )
+      res.status(200).json({message:"success",data:statu})
+
+  }catch(error){
+    res.status(500).json({message:"failed"})
+  }
+})
+
+
+
 
 app.post('/userfilter',async(req,res)=>{
   try{
