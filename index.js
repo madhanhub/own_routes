@@ -41,7 +41,7 @@ app.listen(2222, () => {
 app.get('/', async (req, res) => {
 	res.json('welcome ')
 })
-
+//axios
 app.post('/user/add', async(req,res)=>{
   try{
       const { email, mobile} = req.body
