@@ -3,6 +3,7 @@ const app=express()
 const morgan=require('morgan')
 const mongoose = require('mongoose')
 const path = require('path')
+const axios=require('axios')
 const dotenv=require('dotenv')
 dotenv.config()
 const jsonwebtoken=require('jsonwebtoken')
@@ -40,6 +41,31 @@ app.listen(2222, () => {
 app.get('/', async (req, res) => {
 	res.json('welcome ')
 })
+
+app.post('/user/add', async(req,res)=>{
+  try{
+      const { email, mobile} = req.body
+
+      new user({email,mobile}).save();
+
+      const response=await axios.post(`http://192.168.29.4:3333/appadd`,{
+          mobile,
+          email,
+      })
+      
+      res.status(200).json({
+    success: true,
+    message: 'success',
+    data:   response.data,
+  })
+  }
+  catch(error) {
+          console.error(error)
+          res.status(500).json({ success: false, message: error.message, error })
+  }
+})
+
+
 
 
 app.post('/useradd', async(req,res)=>{
@@ -207,14 +233,14 @@ app.post('/user/change',authorization,async(req,res)=>{
 app.post('/user/statu',authorization,async(req,res)=>{
   try{
     const statu=await user.findOneAndUpdate(
-      {user_name:req.body.user_name,statu:false},
+      {user_name:req.user_name,statu:false},
       {$set:{statu:true}},
       {new:true}
-      )
+    )
       res.status(200).json({message:"success",data:statu})
 
   }catch(error){
-    res.status(500).json({message:"failed"})
+    res.status(500).json({success:false,message:"failed"})
   }
 })
 
