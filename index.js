@@ -44,13 +44,14 @@ app.get('/', async (req, res) => {
 //axios
 app.post('/user/add', async(req,res)=>{
   try{
-      const { email, mobile} = req.body
+      const { email, mobile,user_name} = req.body
 
-      new user({email,mobile}).save();
+      new user({email,mobile,user_name}).save();
 
       const response=await axios.post(`http://192.168.29.4:3333/appadd`,{
           mobile,
           email,
+          user_name,
       })
       
       res.status(200).json({
@@ -65,6 +66,18 @@ app.post('/user/add', async(req,res)=>{
   }
 })
 
+// app.post('/user/delete',async(req,res)=>{
+//   try{
+//     const remove=await axios.post(`http://192.168.29.4:3333/appadd`,
+//     ({
+      
+     
+//     }))
+//     res.status(200).json({message:"success",data:remove.data})
+//   }catch(error){
+//     res.status(500).json({message:"failed"})
+//   }
+// })
 
 
 
