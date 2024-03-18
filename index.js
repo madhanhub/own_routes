@@ -6,6 +6,17 @@ const path = require('path')
 const axios=require('axios')
 const dotenv=require('dotenv')
 dotenv.config()
+const multer=require('multer')
+const storage=multer.diskStorage({
+  destination:(req,file,cb)=>{
+    cb(null,'photo')
+  },
+  filename:(req,file,cb)=>{
+  cb(null,file.originalname)
+    }
+})
+const photo=multer({storage})
+app.set('viewengine','ejs')
 const jsonwebtoken=require('jsonwebtoken')
 
 const user=require('./schema/User')
@@ -68,11 +79,15 @@ app.post('/user/add', async(req,res)=>{
 
 // app.post('/user/delete',async(req,res)=>{
 //   try{
-//     const remove=await axios.post(`http://192.168.29.4:3333/appadd`,
-//     ({
-      
+//     const {email,user_name}=req.body;
+    
+//     const remove=await axios.post(`http://192.168.29.4:3333/appdelete`,
+//     {
+//       method:'delete',
+//      user_name,
+//      email
      
-//     }))
+//     })
 //     res.status(200).json({message:"success",data:remove.data})
 //   }catch(error){
 //     res.status(500).json({message:"failed"})
@@ -490,3 +505,8 @@ app.post('/rout',async(req,res)=>{
 //   }
 // })
 
+app.post('/upload/photo',photo.array('file',3),(req,res)=>{
+	
+	res.json(req.file)
+	
+		})
