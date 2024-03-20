@@ -6,28 +6,30 @@ const path = require('path')
 const axios=require('axios')
 const dotenv=require('dotenv')
 dotenv.config()
+
 const multer=require('multer')
-const storage=multer.diskStorage({
-  destination:(req,file,cb)=>{
-    cb(null,'photo')
-  },
-  filename:(req,file,cb)=>{
-  cb(null,file.originalname)
-    }
-})
-const photo=multer({storage})
-app.set('viewengine','ejs')
+// const storage=multer.diskStorage({
+//   destination:(req,file,cb)=>{
+//     cb(null,'photo')
+//   },
+//   filename:(req,file,cb)=>{
+//   cb(null,file.originalname)
+//     }
+// })
+// const photo=multer({storage})
+// app.set('viewengine','ejs')
 const jsonwebtoken=require('jsonwebtoken')
 
 const user=require('./schema/User')
 const product = require('./schema/product')
 const authorization = require('./function/auth')
+const upload= require('./function/upload_images')
 const { title } = require('process')
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(express.urlencoded({ extended: true }))
 
-app.listen(2222, () => {
+app.listen(1111, () => {
 	console.log('SERVER Run ')
 
 	mongoose.set('strictQuery', false)
@@ -122,6 +124,26 @@ app.post('/useradd', async(req,res)=>{
     }
 })
 
+app.post('/user/create',authorization,async(req,res)=>{
+  const token= req.header.authorization
+  console.log(token)
+  try{
+    const create=await user({
+      id:req.body,
+      user_name:req.body.user_name,
+      email:req.body.email,
+      mobile:req.body.mobile,
+      address:req.body.address,
+      labels:req.body.labels,
+      password:req.body.password
+    }).save()
+    res.status(200).json({message:"success",data:create})
+  }catch(error){
+    res.status(500).json({message:"failed"})
+  }
+})
+
+
 app.post('/user/login',async(req,res)=>{
   try{
     const {email,password}= req.body
@@ -153,24 +175,6 @@ app.post('/user/login',async(req,res)=>{
 	}
 })
 
-app.post('/user/create',authorization,async(req,res)=>{
-  const token= req.header.authorization
-  console.log(token)
-  try{
-    const create=await user({
-      id:req.body,
-      user_name:req.body.user_name,
-      email:req.body.email,
-      mobile:req.body.mobile,
-      address:req.body.address,
-      labels:req.body.labels,
-      password:req.body.password
-    }).save()
-    res.status(200).json({message:"success",data:create})
-  }catch(error){
-    res.status(500).json({message:"failed"})
-  }
-})
 
 app.post('/user/list',authorization,async(req,res)=>{
   try{
@@ -505,8 +509,8 @@ app.post('/rout',async(req,res)=>{
 //   }
 // })
 
-app.post('/upload/photo',photo.array('file',3),(req,res)=>{
-	
-	res.json(req.file)
-	
-		})
+app.post('/upload',upload.single('file'),(req,res)=>{
+	res.json('success')	
+  res.json(req.file)
+})
+
