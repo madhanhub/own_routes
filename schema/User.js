@@ -4,6 +4,10 @@ const user_schema =new mongoose.Schema({
     user_name:{
         type:String
     },
+    image:{
+        type:String
+
+    },
     statu:{
             type:Boolean,
             default:false

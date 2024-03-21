@@ -1,11 +1,12 @@
 const express = require('express')
 const app=express()
 const morgan=require('morgan')
-const mongoose = require('mongoose')
-const path = require('path')
+const mongoose= require('mongoose')
+const path= require('path')
 const axios=require('axios')
-const dotenv=require('dotenv')
-dotenv.config()
+const dotenv=require('dotenv').config()
+// dotenv.config()
+
 
 const multer=require('multer')
 // const storage=multer.diskStorage({
@@ -19,15 +20,16 @@ const multer=require('multer')
 // const photo=multer({storage})
 // app.set('viewengine','ejs')
 const jsonwebtoken=require('jsonwebtoken')
-
 const user=require('./schema/User')
 const product = require('./schema/product')
 const authorization = require('./function/auth')
+const cors= require('./function/cors')
 const upload= require('./function/upload_images')
 const { title } = require('process')
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(express.urlencoded({ extended: true }))
+app.use(cors)
 
 app.listen(1111, () => {
 	console.log('SERVER Run ')
@@ -179,7 +181,7 @@ app.post('/user/login',async(req,res)=>{
 app.post('/user/list',authorization,async(req,res)=>{
   try{
     const title=await user.findOne({
-      _id:req.id})
+      _id:req.id},{labels:0})
     res.status(200).json({message:"success",data:title})
   }catch(error){
     res.status(500).json({message:"failed"})
@@ -509,8 +511,14 @@ app.post('/rout',async(req,res)=>{
 //   }
 // })
 
-app.post('/upload',upload.single('file'),(req,res)=>{
-	res.json('success')	
-  res.json(req.file)
-})
+// app.post('/upload',upload.single('file'),(req,res)=>{
+// 	res.json('success')	
+//   res.json(req.file)
+// })
 
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.json({ message: 'File uploaded successfully', fileInfo: req.file })
+  res.json(req.file)
+  
+
+})
