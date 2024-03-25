@@ -32,17 +32,17 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors)
 
 app.listen(1111, () => {
-	console.log('SERVER Run ')
+	console.log('SERVER Run')
 
 	mongoose.set('strictQuery', false)
 	//connecting mongodb
 	mongoose
 		.connect(`mongodb+srv://madhan91101:Mcabca%409@klncollege.ab2hmvj.mongodb.net/`
 			//process.env.MYDB_CONNECTION,
-			, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		})
+		// 	, {
+		// 	useNewUrlParser: true,
+		// 	useUnifiedTopology: true,
+)
 		.then(() => {
 			conn = mongoose.connection
 			console.log('database Connected')
@@ -519,6 +519,4 @@ app.post('/rout',async(req,res)=>{
 app.post('/upload', upload.single('file'), (req, res) => {
   res.json({ message: 'File uploaded successfully', fileInfo: req.file })
   res.json(req.file)
-  
-
 })

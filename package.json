@@ -1,7 +1,6 @@
 {
-  "name": "routes",
+  "name": "express",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,16 +9,25 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.352.0",
-    "aws-sdk": "^2.1579.0",
-    "axios": "^1.6.7",
+    "aws-sdk": "^2.1584.0",
+    "axios": "^1.6.8",
     "axois": "^0.0.1-security",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.18.3",
+    "express": "^4.19.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.2.0",
+    "mongoose": "^8.2.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "multer-s3": "^3.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madhanhub/routes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/madhanhub/routes/issues"
+  },
+  "homepage": "https://github.com/madhanhub/routes#readme",
+  "description": ""
 }
