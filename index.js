@@ -22,6 +22,7 @@ const multer=require('multer')
 const jsonwebtoken=require('jsonwebtoken')
 const user=require('./schema/User')
 const product = require('./schema/product')
+const sales=require('./schema/Sales')
 const authorization = require('./function/auth')
 const cors= require('./function/cors')
 const upload= require('./function/upload_images')
@@ -279,8 +280,6 @@ app.post('/user/statu',authorization,async(req,res)=>{
 })
 
 
-
-
 app.post('/userfilter',async(req,res)=>{
   try{
     const filter= await user.findOne({name:req.body.name,statu:true})
@@ -344,12 +343,28 @@ catch(error){
 }
 })
 
-app.post('/productadd',async(req,res)=>{
+app.post('/product',async(req,res)=>{
   try{
-    const pro=await product.findOneAndUpdate({user_name:req.body.user_name},{$push:{'product.0.phone':{
+    const{name}=req.body
+    const pro=new product({
+      name:req.body.name,
+      
+      
+    }) 
+    pro.save()
+  res.status(200).json({message:"success",data:pro})
+  }catch(error){
+    res.status(500).json({message:'failed'})
+  }
+})
+
+app.post('/product/phone',async(req,res)=>{
+  try{
+    const pro=await product.findOneAndUpdate({name:req.body.name},{$push:{'product.0.phone':{
       phone_type:req.body.phone_type,
       phone_name:req.body.phone_name,
-      phone_price:req.body.phone_price
+      phone_price:req.body.phone_price,
+      
       
 
     }}},{new:true})
@@ -363,7 +378,7 @@ app.post('/productadd',async(req,res)=>{
 
 app.post('/product/laptop',async(req,res)=>{
   try{
-    const laptop=await product.findOneAndUpdate({user_name:req.body.user_name},{$push:{'product.0.laptop':{
+    const laptop=await product.findOneAndUpdate({name:req.body.name},{$push:{'product.0.laptop':{
       laptop_name:req.body.laptop_name,
       laptop_type:req.body.laptop_type,
       laptop_price:req.body.laptop_price
@@ -519,4 +534,27 @@ app.post('/rout',async(req,res)=>{
 app.post('/upload', upload.single('file'), (req, res) => {
   res.json({ message: 'File uploaded successfully', fileInfo: req.file })
   res.json(req.file)
+})
+
+
+app.post('/sale',async(req,res)=>{
+  try{
+    const sales_list=await sales.insertMany({
+      sales_count:req.body.sales_count
+    }) 
+      res.status(200).json({message:"success",data:sales_list})
+  }catch(error){
+    res.status(500).json({message:'failed'})
+  }
+})
+
+app.post('/sale/amount',async(req,res)=>{
+  try{
+    const sales_amount=await sales.findOneAndUpdate({_id:req.body._id},
+      {$push:{phone_sales:{phone_name:req.body.phone_name,
+      phone_amount:req.body.phone_amount}}}) 
+      res.status(200).json({message:"success",data:sales_amount})
+  }catch(error){
+    res.status(500).json({message:'failed'})
+  }
 })

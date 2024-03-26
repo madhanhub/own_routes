@@ -10,18 +10,18 @@ const product =new mongoose.Schema({
     },
 
     product:[{
-        phone:[{
+        phone:{
             phone_name:{type:String},
             phone_type:{type:String},
             phone_price:{type:Number},
             
-        }],
-        laptop:[{
+        },
+        laptop:{
             laptop_name:{type:String},
             laptop_type:{type:String},
             laptop_price:{type:Number},
             
-        }]
+        }
         
         //  avaliable:{
         //     type:String,
