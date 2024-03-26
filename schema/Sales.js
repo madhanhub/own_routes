@@ -4,9 +4,15 @@ const total_sales=new mongoose.Schema({
         type:Number,
     },
     phone_sales:[{
+        
         phone_name:String,
-        phone_amount:Number
+        phone_amount:Number,
+        
     }],
+    status:{
+        type:Boolean,
+        default:true
+    }
     
 })
 module.exports=mongoose.model('Sales',total_sales)

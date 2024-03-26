@@ -558,3 +558,15 @@ app.post('/sale/amount',async(req,res)=>{
     res.status(500).json({message:'failed'})
   }
 })
+
+app.post('/status',async(req,res)=>{
+  try{
+    const sts=await sales.findOneAndUpdate({
+      _id:req.body._id,status:true  
+    },{$set:{status:false}}
+    )
+    res.status(200).json({message:'success',data:sts})
+  }catch(error){
+    res.status(500).json({message:'failed'})
+  }
+})
