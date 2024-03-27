@@ -22,6 +22,7 @@ const multer=require('multer')
 const jsonwebtoken=require('jsonwebtoken')
 const user=require('./schema/User')
 const product = require('./schema/product')
+const company=require('./schema/Company')
 const sales=require('./schema/Sales')
 const authorization = require('./function/auth')
 const cors= require('./function/cors')
@@ -604,4 +605,31 @@ app.post('/phone/sts',async(req,res)=>{
   res.status(500).json({message:'failed'})  
   }
   
+})
+
+app.post('/name',async(req,res)=>{
+  try{
+    const{name,address,product}=req.body
+    const c_name=new company({
+      name,
+      address,
+      product
+    }).save()
+    res.status(200).json({message:"success",data:c_name})
+  }catch(error){
+    res.status(500).json({message:'failed'})
+  }
+})
+
+
+app.post('/product/mobile',async(req,res)=>{
+  try{
+    const m_list=await company.findOneAndUpdate({
+      _id:req.body._id
+    },{$push:{"products.0.mobile":req.body.mobile,'products.0.laptop':req.body.laptop}},
+    {new:true})
+    res.status(200).json({message:'success',data:m_list})
+  }catch(error){
+    res.status(500).json({message:'failed'})
+  }
 })
