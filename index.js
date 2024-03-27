@@ -548,7 +548,7 @@ app.post('/sale',async(req,res)=>{
   }
 })
 
-app.post('/sale/amount',async(req,res)=>{
+app.post('/phone',async(req,res)=>{
   try{
     const sales_amount=await sales.findOneAndUpdate({_id:req.body._id},
       {$push:{phone_sales:{phone_name:req.body.phone_name,
@@ -569,4 +569,39 @@ app.post('/status',async(req,res)=>{
   }catch(error){
     res.status(500).json({message:'failed'})
   }
+})
+
+app.post('/laptop',async(req,res)=>{
+  try{
+    const lap=await sales.findOneAndUpdate({_id:req.body._id},
+      {$push:{laptop:{laptop_name:req.body.laptop_name}}})
+      res.status(200).json({message:"success",data:lap})    
+  }catch(error){
+  res.status(500).json({message:'failed'})  
+  }
+  
+})
+
+app.post('/laptop/sts',async(req,res)=>{
+  try{
+    const lap_sts=await sales.findOneAndUpdate({_id:req.body._id,'laptop.laptop_name':req.body.laptop_name},
+      {$set:{'laptop.$.laptop_buy':true}},
+      {new:true})
+      res.status(200).json({message:"success",data:lap_sts})    
+  }catch(error){
+  res.status(500).json({message:'failed'})  
+  }
+  
+})
+
+app.post('/phone/sts',async(req,res)=>{
+  try{
+    const ph_sts=await sales.findOneAndUpdate({_id:req.body._id,'phone_sales.phone_name':req.body.phone_name},
+      {$set:{'phone_sales.$.phone_buy':true}},
+      {new:true})
+      res.status(200).json({message:"success",data:ph_sts})    
+  }catch(error){
+  res.status(500).json({message:'failed'})  
+  }
+  
 })

@@ -7,12 +7,22 @@ const total_sales=new mongoose.Schema({
         
         phone_name:String,
         phone_amount:Number,
-        
+        phone_buy:{
+            type:Boolean,
+        default:false},
     }],
     status:{
         type:Boolean,
         default:true
-    }
+    },
+    laptop:[{
+        laptop_name:String,
+        laptop_buy:
+        {   
+        type:Boolean,
+        default:true}
+        
+    }],
     
 })
 module.exports=mongoose.model('Sales',total_sales)
