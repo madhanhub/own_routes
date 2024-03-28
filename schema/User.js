@@ -52,7 +52,7 @@ const user_schema =new mongoose.Schema({
     },
     products:[{
         type:String,
-        default:"empty" 
+        
     }]
 })
 module.exports =mongoose.model("User",user_schema)
