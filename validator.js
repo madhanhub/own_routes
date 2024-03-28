@@ -1,6 +1,6 @@
 const validator = {
     validateName: (user_name) => {
-        if (!/^[A-Z]+$/.test(user_name)) {
+        if (!/^[A-Za-z]+$/.test(user_name)) {
           return false;
         }
         return true;

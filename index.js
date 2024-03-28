@@ -295,45 +295,12 @@ app.post('/userfilter',async(req,res)=>{
   }
 })
 
-// app.post('/userfind', async (req, res) => {
-//   try {
-//     // Ensure "user" and "product" models are properly imported or defined above this route.
-//     // Assuming "user" and "product" are your Mongoose model variables.
-
-//     // Updating user status
-//     const updatedUser = await user.findOneAndUpdate(
-//       { name: req.body.user_name }, 
-//       { $set: { status: true } }, // Assuming the correct field name is "status"
-//       { new: true } // Return the updated document instead of the original
-//     )
-      
-
-//     const updatedProduct = await product.findOneAndUpdate(
-//       { user_name: req.body.user_name }, // Use the name from the updated user document
-//       { $set: { status: true } }, // Assuming the correct field name is "status"
-//       { new: true }
-//     );
-//       console.log(updatedProduct)
-//       //console.log(updatedProduct)
-
-   
-//     // Responding with the updated user data
-//     // Optionally, you can include updated product data in the response if needed
-//     res.status(200).json({ message: "Success", data: updatedUser });
-    
-//   } catch (error) {
-//     console.error(error); // Logging the error can help in debugging
-//     res.status(500).json({ message: "Failed", error: error.message });
-//   }
-// });
 
 app.post('/userreplace',async(req,res)=>{
  var name="ken"
   try{
   const findone=await user.findOneAndUpdate({
     user_name:name},{$set:{statu:true}})
-
-    
 
   res.status(200).json({message:"success",data:findone})
 }
@@ -346,10 +313,10 @@ catch(error){
 
 app.post('/product',async(req,res)=>{
   try{
-    const{name}=req.body
+    const{name,sales_count}=req.body
     const pro=new product({
-      name:req.body.name,
-      
+      name,
+      sales_count
       
     }) 
     pro.save()
@@ -641,6 +608,22 @@ app.post('/product/view',async(req,res)=>{
     })
     console.log(view)
     res.status(200).json({message:'success',data:view})
+  }catch(error){
+    res.status(500).json({message:'failed'})
+  }
+})
+
+
+app.post('/sales/change',async(req,res)=>{
+  try{
+    const find =await sales.findOneAndUpdate({sales_count:req.body.sales_count},{
+      $set:{status:true}
+    })
+    var sales_count=find.sales_count
+    await product.findOneAndUpdate({
+      sales_count:sales_count
+    },{$set:{statu:false}})
+    res.status(200).json({message:'success',data:find})
   }catch(error){
     res.status(500).json({message:'failed'})
   }

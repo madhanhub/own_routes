@@ -8,10 +8,14 @@ const product =new mongoose.Schema({
             validator: validator.validateName,
             message: 'Invalid name. Name should only contain alphabets.',
           },
+
+    },
+    sales_count:{
+        type:Number,
     },
     statu:{
         type:Boolean,
-        default:false
+        default:true
     },
 
     product:[{
