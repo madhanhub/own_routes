@@ -1,8 +1,13 @@
 const mongoose = require('mongoose')
+const validator=require('../validator')
 const product =new mongoose.Schema({
     
     name:{
-        type:String
+        type:String,
+        validate: {
+            validator: validator.validateName,
+            message: 'Invalid name. Name should only contain alphabets.',
+          },
     },
     statu:{
         type:Boolean,

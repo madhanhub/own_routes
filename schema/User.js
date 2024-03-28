@@ -1,8 +1,13 @@
 const mongoose = require('mongoose')
+const validator=require('../validator')
 const user_schema =new mongoose.Schema({
     
     user_name:{
-        type:String
+        type:String,
+        validate: {
+            validator: validator.validateName,
+            message: ' Invalid user name.',
+          },
     },
     image:{
         type:String
@@ -13,7 +18,12 @@ const user_schema =new mongoose.Schema({
             default:false
     },
     email:{
-        type:String
+        type:String,
+        validate: {
+        validator: validator.validateEmail,
+        message: 'Invalid email.',
+      },
+        
     },
     mobile:{
         type:String
